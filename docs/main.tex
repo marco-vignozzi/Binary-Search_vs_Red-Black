@@ -1,0 +1,192 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algpseudocode}
+
+\title{Alberi Binari vs Alberi Rosso-Neri: ricerca ed inserimento}
+\author{Marco Vignozzi}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduzione}
+In questo esperimento analizzo le prestazioni di Alberi Binari di Ricerca e Alberi Rosso-Neri nell'inserimento di un numero crescente di valori, e nella ricerca su un numero crescente di valori, per poi confrontare i risultati ottenuti attraverso dei grafici.
+
+\section{Caratteristiche teoriche}
+Di seguito introduco le caratteristiche teoriche delle strutture dati e degli algoritmi utilizzati con riferimento alle prestazioni attese.
+
+\subsection{Alberi Binari di Ricerca (ABR)}
+\begin{itemize}
+    \item \textbf{Struttura Dati}
+\end{itemize}
+Gli ABR sono degli alberi in cui ogni nodo ha al massimo due figli e tutti i valori nel sottoalbero sinistro di ciascun nodo sono minori o uguali al valore del nodo, mentre tutti quelli nel sottoalbero destro sono maggiori.
+\begin{itemize}
+    \item \textbf{Algoritmi}
+\end{itemize}
+Gli algoritmi di Ricerca e Inserimento possono essere entrambi eseguiti in un Tempo O(h) dove h è l'altezza dell'albero.
+
+\subsection{Alberi Rosso-Neri (ARN)}
+\begin{itemize}
+    \item \textbf{Struttura Dati}
+\end{itemize}
+Gli ARN hanno la struttura degli ABR ma con l'aggiunta di un attributo: il colore del nodo, rosso o nero. Un ARN deve soddisfare le seguenti proprietà:
+\begin{enumerate}
+    \item Ogni nodo è rosso o nero.
+    \item La radice è nera.
+    \item Ogni foglia è nera (intesa come foglia terminale NIL).
+    \item Se un nodo è rosso, allora entrambi i suoi figli sono neri.
+    \item Per ogni nodo, tutti i cammini semplici che vanno dal nodo alle foglie sue discendenti contengono lo stesso numero di nodi neri.
+\end{enumerate}
+Grazie a queste proprietà un ARN con n nodi ha la caratteristica di avere un'altezza massima di $2{\log_{2}{(n+1)}}$.
+\begin{itemize}
+    \item \textbf{Algoritmi}
+\end{itemize}
+Gli algoritmi di Ricerca e Inserimento per un ARN con n nodi vengono eseguiti in un tempo O(${\log_{2}{n}}$).
+
+\subsection{Prestazioni attese}
+\begin{itemize}
+    \item \textbf{Inserimento}
+\end{itemize}
+Nel caso migliore l'ABR è perfettamente bilanciato e il tempo di esecuzione dell'algoritmo di Inserimento dovrebbe essere pressochè lo stesso sia per ABR che per ARN, quindi O(${\log_{2}{n}}$). \\
+Nel caso peggiore però l'ABR è equivalente a una lista e per ogni Inserimento si dovrà scorrere tutta la lista, rendendo il tempo di esecuzione un O(n) per l'ABR contro l'O(${\log_{2}{n}}$)  dell'ARN.
+
+\begin{itemize}
+    \item \textbf{Ricerca}
+\end{itemize}
+In questo caso i tempi di esecuzione dipendono dalla posizione del valore cercato, oltre che dalla struttura assunta dall'albero nel caso di ABR. Mettendoci nel caso peggiore della prima condizione avremo che l'elemento cercato si troverà alla massima profondità dell'albero. Di conseguenza i tempi saranno gli stessi del caso dell'inserimento sia per ABR che per ARN.
+
+\section{Esperimenti}
+Per testare le diverse prestazioni di queste strutture dati ho eseguito i seguenti esperimenti:
+\begin{itemize}
+    \item Inserimento di un numero crescente di elementi 
+    \item Ricerca con successo  
+    \item Ricerca senza successo
+\end{itemize}
+Per ogni esperimento è possibile scegliere un range di valori da inserire o cercare con un certo step e se questi valori devono essere inseriti in ordine crescente oppure no. Ogni esperimento produrrà un grafico tempo/numero di elementi(cercati o inseriti) sia per l'inserimento, sia per la ricerca. Nel terzo esperimento produrrà inoltre un secondo grafico dove si confronta ciascuna struttura con se stessa per quanto riguarda le prestazioni di ricerca con successo e senza successo.
+
+\section{Codice}
+\subsection{Moduli}
+Nel programma di test sono presenti i seguenti moduli:
+\begin{enumerate}
+    \item \textbf{BTclass.py}: in questo modulo è contenuta la struttura dati ABR e tutti i suoi metodi.
+    \item \textbf{RBTclass.py}: qui troviamo struttura e metodi per l'ARN.
+    \item \textbf{test.py}: questo modulo si occupa dello svolgimento dei test e contiene metodi per la generazione dei documenti. Utilizza BTclass.py e RBTclass.py.
+    \item \textbf{main.py}: in questo modulo si creano i test e si richiede di stampare i documenti richiesti. Utilizza il modulo test.py. 
+\end{enumerate}
+
+\subsection{Classi}
+Vengono utilizzate le seguenti classi:
+\begin{itemize}
+    \item \textbf{Node}: questa classe è presente nei moduli 1 e 2 e contiene la struttura del nodo del relativo albero.
+    \begin{itemize}
+        \item Nel nodo dell'ABR non è presente l'attributo parent che non era necessario visto che ho implementato sia la ricerca che l'inserimento con la ricorsione. 
+        \item Nel nodo dell'ARN ho aggiunto gli attributi parent e color.
+    \end{itemize}
+    \item \textbf{BTclass}: struttra dati per ABR con metodi per inserimento e ricerca, oltre a metodo per la stampa. Mantiene il nodo radice nell'attributo \emph{root}.
+    \item \textbf{RBTclass}: struttura dati per ARN anch'essa con metodi per inserimento, ricerca e stampa.
+    \item \textbf{Test}: questa è la classe principale. Quando viene istanziata genera i test richiesti (vengono eseguiti \emph{(end-start)/step} test per tipo) e li salva nell'attributo \emph{tests}, che è una lista di tuple che rappresentano test:\\(tipo albero, tipo test, elementi cercati/inseriti, tempo impiegato).\\Il costruttore richiede di specificare i seguenti parametri:
+    \begin{itemize}
+        \item \emph{t\_type}: determina l'ordinamento con cui viene creata la lista di numeri da inserire negli alberi. Può essere \emph{"random"}(default) per ordinamento casuale o qualsiasi altra stringa per ordinamento sequenziale.
+        \item \emph{r\_type}: determina il tipo di ricerca e può essere \emph{"success"}(default) per ricerca con successo o qualsiasi altro valore per ricerca senza successo.
+        \item \emph{start}: valore minimo del numero di elementi cercati/inseriti in un test. 1 è il valore di default.
+        \item \emph{max\_value}: valore massimo del numero di elementi cercati/inseriti in un test. 10 è il valore di default.
+        \item \emph{step}: distanza tra il numero di elementi cercati/inseriti in un test e il successivo. 1 è il valore di default.
+        \item \emph{dir\_name}: nome della cartella in cui viene salvata la documentazione (a partire dal percorso \emph{./doc}). "test" è il valore di default.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Metodi}
+\begin{itemize}
+    \item \textbf{Modulo BTclass.py}
+\end{itemize}
+\begin{verbatim}get_name(self)\end{verbatim}
+Restituisce la stringa "binary tree".
+\begin{verbatim}clear(self)\end{verbatim}
+Cancella l'albero settando \emph{root} a \emph{None}.
+\begin{verbatim}set_root(self, key)\end{verbatim}
+Assegna il valore \emph{key} alla radice dell'albero come \emph{Node(key)}.
+\begin{verbatim}insert(self, key)\end{verbatim}
+Riceve un valore \emph{key} da inserire nell'albero e lo passa al metodo di inserimento insieme al nodo iniziale \emph{root}.
+\begin{verbatim}insert_node(self, current_node, key)\end{verbatim}
+Metodo di inserimento. Riceve il nodo corrente e il valore \emph{key} da inserire. Trova il posto giusto in maniera ricorsiva e lo inserisce come \emph{Node(key)}.
+\begin{verbatim}find(self, key)\end{verbatim}
+Passa il valore \emph{key} alla routine di ricerca, passandole \emph{root} come nodo iniziale.
+\begin{verbatim}find_node(self, current_node, key)\end{verbatim}
+Metodo di ricerca. Riceve il nodo corrente e un valore \emph{key} e lo cerca nell'albero in maniera ricorsiva, ritornando \emph{True} se il valore è presente in uno dei nodi, altrimenti \emph{False}.
+\begin{verbatim}inorder(self)\end{verbatim}
+Stampa in ordine crescente i valori contenuti nell'albero.\\
+
+\begin{itemize}
+    \item \textbf{Modulo RBTclass.py}
+\end{itemize}
+\begin{verbatim}get_name(self)\end{verbatim}
+Ritorna la stringa "red-black tree".
+\begin{verbatim}clear(self)\end{verbatim}
+Cancella l'albero settando \emph{root} a \emph{None}.
+\begin{verbatim}set_root(self, node)\end{verbatim}
+Riceve un nodo \emph{node} e lo assegna alla radice \emph{root}.
+\begin{verbatim}insert(self, key)\end{verbatim}
+Riceve un valore \emph{key} da inserire nell'albero e lo passa al metodo di inserimento come \emph{Node(key)} insieme al nodo iniziale \emph{root}.
+\begin{verbatim}left_rotate(self, x)\end{verbatim}
+Riceve il nodo \emph{x} intorno al quale far girare l'albero.
+\begin{verbatim}right_rotate(self, x)\end{verbatim}
+Riceve il nodo \emph{x} intorno al quale far girare l'albero.
+\begin{verbatim}insert_node(self, z)\end{verbatim}
+Metodo di inserimento. Riceve il nodo \emph{z} da inserire, trova il posto giusto e lo inserisce per poi richiamare il metodo di fixup.
+\begin{verbatim}rb_insert_fixup(self, z)\end{verbatim}
+Riceve il nodo \emph{z} da cui iniziare il fixup e riordina i colori dell'albero in modo che rispettino le regole per l'albero rosso nero.
+\begin{verbatim}find(self, key)\end{verbatim}
+Passa il valore \emph{key} alla routine di ricerca, passandole \emph{root} come nodo iniziale.
+\begin{verbatim}find_node(self, current_node, key)\end{verbatim}
+Metodo di ricerca. Riceve il nodo corrente e un valore \emph{key} e lo cerca nell'albero in maniera ricorsiva, ritornando \emph{True} se il valore è presente in uno dei nodi, altrimenti \emph{False}.
+\begin{verbatim}inorder(self)\end{verbatim}
+Stampa in ordine crescente i valori contenuti nell'albero.\\
+
+\begin{itemize}
+    \item \textbf{Modulo test.py}
+\end{itemize}
+\begin{verbatim}random_list(n)\end{verbatim}
+Riceve un valore \emph{n} intero e restituisce una lista di interi nel range da 0 a \emph{n} ordinati in maniera casuale.
+\begin{verbatim}create_tests_list(op, n_list, start, end, step)\end{verbatim}
+Lista parametri:
+\begin{itemize}
+    \item \emph{op}: una stringa che specifica il test da eseguire (\emph{"find"} per la ricerca con successo e \emph{"insert"} per l'inserimento, o un'altra stringa per la ricerca senza successo).
+    \item \emph{n\_list}: una lista di valori che vengono usati per inizializzare gli alberi per la ricerca.
+    \item \emph{start}: valore minimo di elementi cercati/inseriti in un test.
+    \item \emph{end}: valore massimo di elementi cercati/inseriti in un test.
+    \item \emph{step}: differenza tra il numero di elementi cercati/inseriti tra un test e il successivo.
+\end{itemize}
+Questo metodo istanzia gli alberi necessari al test e richiama i metodi \emph{test\_insert()} o \emph{test\_find()} (a seconda del valore di \emph{op}) un numero \emph{(end-start)/step} di volte, aggiungendo ogni volta il test a una lista di tuple che verrà usata come valore di ritorno. Ogni elemento della lista contiene quindi le seguenti informazioni riguardo a un test eseguito: (tipo albero, tipo test, elementi cercati/inseriti, tempo impiegato).
+\begin{verbatim}test_insert(tree, values_list, number_of_entries, r=0)\end{verbatim}
+Questo metodo effettua il numero di inserimenti richiesti attraverso il parametro \emph{number\_of\_entries} nell'albero \emph{tree} prendendo gli elementi dalla \emph{values\_list}. Viene calcolato il tempo necessario a inserire tutti i \emph{number\_of\_entries} elementi. Il metodo ritorna una lista di tuple che rappresenta il test eseguito.\\
+Questo metodo è utilizzato anche per creare gli alberi su cui effettuare i test di ricerca. In base al tipo di ricerca che vorremo eseguire passeremo il parametro \emph{r} settato a 0 (ricerca con successo) o a 1 (ricerca senza successo). 
+\begin{verbatim}test_find(tree, values_list, number_of_searches, r=0)\end{verbatim}
+Questo metodo effettua il numero di ricerche richieste dal parametro \emph{number\_of\_searches} nell'albero \emph{tree} cercando gli elementi nella \emph{values\_list} inseriti in precedenza. Il parametro \emph{r} serve in questo caso a definire il tipo di ricerca: \\
+\verb|for x in range(1, number_of_searches, r+1):|\\
+\verb|   tree.find(values_list[x])|\\
+Con r=0 effettuerà la ricerca con successo, cercando gli stessi elementi della \emph{values\_list} che avremo inserito. \\
+Con r=1 effettuerà la ricerca senza successo, cercheremo elementi diversi.\\
+Viene calcolato il tempo necessario a inserire tutti i \emph{number\_of\_entries} elementi. Il metodo ritorna una lista di tuple che rappresenta il test eseguito.
+\begin{verbatim}get_values_list(value_type, op_type, tree_type, tests_list)\end{verbatim}
+Questo metodo estrae una lista di valori dalla lista di tuple \emph{tests\_list} e la ritorna. Il valore estratto è definito attraverso i parametri \emph{value\_type}, \emph{op\_type} e \emph{tree\_type}, che permettono di scegliere che valore della tupla estrarre, per quale tipo di operazione (inserimento o ricerca, con o senza successo) e per quale tipo di albero. Utilizza una routine di appoggio \emph{choose\_value()}.
+\begin{verbatim}choose_value(test_element, value_type)\end{verbatim}
+Riceve una tupla \emph{test\_element} che rappresenta un test e il tipo di valore da estrarre \emph{value\_type}. Ritorna il valore scelto che può essere il tempo impiegato ("time") o il numero di elementi cercati/inseriti in quel test (qualsiasi altra stringa). 
+\begin{verbatim}create_plot(self)\end{verbatim}
+Metodo della classe che serve a creare i grafici degli esperimenti.
+\begin{verbatim}create_docs(self)\end{verbatim}
+Crea i file di testo nella cartella specificata al momento della creazione del test.
+
+
+
+
+% \subsubsection{Struttura Dati}
+% Gli ABR sono strutture dati in cui sono presenti dei nodi e ciascun nodo ha i seguenti attributi
+% \begin{itemize}
+%     \item valore (key)
+%     \item puntatore al padre (p)
+%     \item puntatore al figlio destro (right)
+%     \item puntatore al figlio sinistro (left)
+% \end{itemize}
+% Se un nodo non ha padre si dice radice e il puntatore ha valore NIL, mentre se un nodo non ha un figlio il puntatore corrispondente ha valore NIL. 
+% Nell'ABR ogni nodo ha al massimo due figli, e tutti i valori nel sottoalbero sinistro di ciascun nodo sono minori o uguali al valore del nodo, mentre tutti quelli nel sottoalbero destro sono maggiori. E' necessario anche mantenere un puntatore al nodo radice (root).
+\end{document}
