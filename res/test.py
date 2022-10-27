@@ -114,7 +114,7 @@ class Test:
 
         if r_type != "success":
             self.not_sux_numbers_list = random_list(2*max_value)
-            self.tests += create_tests_list("find " + r_type, self.not_sux_numbers_list, start, 2*max_value, 2*step)
+            self.tests += create_tests_list("find " + r_type, self.not_sux_numbers_list, 2*start, 2*max_value, 2*step)
             self.rbt_time_values_rn = get_values_list("time", "n_find", "red-black tree", self.tests)
             self.bt_time_values_rn = get_values_list("time", "n_find", "binary tree", self.tests)
             self.rbt_numbers_values_rn = get_values_list("number", "n_find", "red-black tree", self.tests)
