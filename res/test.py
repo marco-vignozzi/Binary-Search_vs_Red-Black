@@ -121,7 +121,7 @@ class Test:
             self.bt_numbers_values_rn = get_values_list("number", "n_find", "binary tree", self.tests)
 
     def create_plot(self):
-        plt.rcParams.update({'figure.figsize': (8.5, 8.5), 'figure.dpi': 100})
+        plt.rcParams.update({'figure.figsize': (10.5, 8.5), 'figure.dpi': 100})
 
         if self.r_type != "success":
             rows = 3
@@ -130,6 +130,7 @@ class Test:
 
         fig, axs = plt.subplots(nrows=rows, ncols=1)
         fig.suptitle("ARN vs ABR")
+        fig.tight_layout(pad=3)
 
         axs[0].plot(self.rbt_numbers_values_i, self.rbt_time_values_i, "r")
         axs[0].plot(self.bt_numbers_values_i, self.bt_time_values_i, "b")
