@@ -8,9 +8,8 @@ from res import test
 # NOTE:  more than 900 max value with normal mode won't work, because it can't execute more than 900 recursions in the
 #        binary tree
 
-test1 = test.Test("random", "success", 1000, 10000, 200, "random_values test")
-test2 = test.Test("normal", "success", 1, 800, 10, "sequential_values test")
-test3 = test.Test("random", "not success", 1000, 10000, 200, "rand_not_sux_res test")
+test1 = test.Test("normal", "success", 1, 800, 10, "sequential_values test")
+test2 = test.Test("random", "not success", 1000, 10000, 200, "rand_not_sux_res test")
 
 test1.create_plot()
 test1.create_docs()
@@ -18,5 +17,3 @@ test1.create_docs()
 test2.create_plot()
 test2.create_docs()
 
-test3.create_plot()
-test3.create_docs()

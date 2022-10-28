@@ -12,7 +12,7 @@ def random_list(n):
     return r_list
 
 
-def test_insert(tree, values_list, number_of_entries, r=0):
+def test_insert(tree, values_list, number_of_entries, r=0):        # r=1 is used to set up the tree for not sux research
     start = timer()
     for x in range(0, number_of_entries, r+1):
         tree.insert(values_list[x])
@@ -20,7 +20,7 @@ def test_insert(tree, values_list, number_of_entries, r=0):
     return tree.get_name(), "insert", number_of_entries, end - start
 
 
-def test_find(tree, values_list, number_of_searches, r=0):
+def test_find(tree, values_list, number_of_searches, r=0):          # r=1 if the test is not sux research
     start = timer()
     for x in range(1, number_of_searches, r+1):
         tree.find(values_list[x])
@@ -121,7 +121,7 @@ class Test:
             self.bt_numbers_values_rn = get_values_list("number", "n_find", "binary tree", self.tests)
 
     def create_plot(self):
-        plt.rcParams.update({'figure.figsize': (10.5, 8.5), 'figure.dpi': 100})
+        plt.rcParams.update({'figure.figsize': (8.5, 10.5), 'figure.dpi': 100})
 
         if self.r_type != "success":
             rows = 3
@@ -136,14 +136,14 @@ class Test:
         axs[0].plot(self.bt_numbers_values_i, self.bt_time_values_i, "b")
         axs[0].set_xlabel("Numero elementi inseriti")
         axs[0].set_ylabel("Tempo")
-        axs[0].set_title("Inserimento")
+        axs[0].set_title("Grafico 1: Inserimento")
         axs[0].legend(["ARN", "ABR"])
 
         axs[1].plot(self.rbt_numbers_values_r, self.rbt_time_values_r, "r")
         axs[1].plot(self.bt_numbers_values_r, self.bt_time_values_r, "b")
         axs[1].set_xlabel("Numero elementi cercati")
         axs[1].set_ylabel("Tempo")
-        axs[1].set_title("Ricerca con successo")
+        axs[1].set_title("Grafico 2: Ricerca con successo")
         axs[1].legend(["ARN", "ABR"])
 
         if self.r_type != "success":
@@ -151,7 +151,7 @@ class Test:
             axs[2].plot(self.bt_numbers_values_rn, self.bt_time_values_rn, "b")
             axs[2].set_xlabel("Numero elementi cercati")
             axs[2].set_ylabel("Tempo")
-            axs[2].set_title("Ricerca senza successo")
+            axs[2].set_title("Grafico 3: Ricerca senza successo")
             axs[2].legend(["ARN", "ABR"])
             plt.tight_layout()
 
