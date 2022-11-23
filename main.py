@@ -30,7 +30,7 @@ test4.create_plot()
 test4.create_docs()
 del test4
 
-test5 = test.Test("normal", "success", 1, 800, 10, "sequential_values test")
+test5 = test.Test("normal", "success", 1, 801, 10, "sequential_values test")
 test5.create_plot()
 test5.create_docs()
 del test5
