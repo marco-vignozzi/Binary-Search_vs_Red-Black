@@ -112,6 +112,8 @@ class Test:
         self.rbt_numbers_values_r = get_values_list("number", "find", "red-black tree", self.tests)
         self.bt_numbers_values_r = get_values_list("number", "find", "binary tree", self.tests)
 
+
+
         if r_type != "success":
             self.not_sux_numbers_list = random_list(2*max_value)
             self.tests += create_tests_list("find " + r_type, self.not_sux_numbers_list, 2*start, 2*max_value, 2*step)
@@ -130,7 +132,7 @@ class Test:
 
         fig, axs = plt.subplots(nrows=rows, ncols=1)
         fig.suptitle("ARN vs ABR")
-        fig.tight_layout(pad=3)
+        fig.tight_layout(pad=5)
 
         axs[0].plot(self.rbt_numbers_values_i, self.rbt_time_values_i, "r")
         axs[0].plot(self.bt_numbers_values_i, self.bt_time_values_i, "b")
