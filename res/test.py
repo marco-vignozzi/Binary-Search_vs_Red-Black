@@ -112,15 +112,15 @@ class Test:
         self.rbt_numbers_values_r = get_values_list("number", "find", "red-black tree", self.tests)
         self.bt_numbers_values_r = get_values_list("number", "find", "binary tree", self.tests)
 
+        # this part of code relates to the not-successfull research test, which isn't consistent enough
 
-
-        if r_type != "success":
-            self.not_sux_numbers_list = random_list(2*max_value)
-            self.tests += create_tests_list("find " + r_type, self.not_sux_numbers_list, 2*start, 2*max_value, 2*step)
-            self.rbt_time_values_rn = get_values_list("time", "n_find", "red-black tree", self.tests)
-            self.bt_time_values_rn = get_values_list("time", "n_find", "binary tree", self.tests)
-            self.rbt_numbers_values_rn = get_values_list("number", "n_find", "red-black tree", self.tests)
-            self.bt_numbers_values_rn = get_values_list("number", "n_find", "binary tree", self.tests)
+        # if r_type != "success":
+        #     self.not_sux_numbers_list = random_list(2*max_value)
+        #     self.tests += create_tests_list("find " + r_type, self.not_sux_numbers_list, 2*start, 2*max_value, 2*step)
+        #     self.rbt_time_values_rn = get_values_list("time", "n_find", "red-black tree", self.tests)
+        #     self.bt_time_values_rn = get_values_list("time", "n_find", "binary tree", self.tests)
+        #     self.rbt_numbers_values_rn = get_values_list("number", "n_find", "red-black tree", self.tests)
+        #     self.bt_numbers_values_rn = get_values_list("number", "n_find", "binary tree", self.tests)
 
     def create_plot(self):
         plt.rcParams.update({'figure.figsize': (8.5, 10.5), 'figure.dpi': 100})
